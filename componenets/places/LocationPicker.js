@@ -4,11 +4,13 @@ import { Colors } from "../../constants/Colors";
 import { getCurrentPositionAsync, useForegroundPermissions, PermissionStatus } from 'expo-location';  // This package needs developer to ask for permission.
 import { useState } from "react";
 import { getMapPreview } from "../../util/location";
+import { useNavigation } from "@react-navigation/native";
 
 
 export default function LocationPicker() {
     const [locationPermissionInfo, requestPermission] = useForegroundPermissions();
     const [pickedLocation, setPickedLocation] = useState();
+    const navigation = useNavigation();
 
     async function verifiedPermissions() {
         // Function to get permissions (IOS)
@@ -46,9 +48,9 @@ export default function LocationPicker() {
         );
     };
     
-    function pickOnMapsHandler() {};
-
-
+    function pickOnMapsHandler() {
+        navigation.navigate('Map');
+    };
 
     return (
         <View>
