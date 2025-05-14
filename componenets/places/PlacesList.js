@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, View, Text } from "react-native";
 import PlaceItem from "./PlaceItem";
 
 export default function PlacesList({places}) {
@@ -7,8 +7,9 @@ export default function PlacesList({places}) {
             <View style={styles.fallbackContainer}>
                 <Text style={styles.fallbackText}>No places added yet.</Text>
             </View>
-        )
-    } 
+        );
+    };
+    
     return (
         <FlatList data={places} keyExtractor={(item) => item.id} renderItem={(item) => <PlaceItem place={item} />}/>
     )
