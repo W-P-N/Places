@@ -7,7 +7,7 @@ import { getMapPreview } from "../../util/location";
 import { useNavigation, useRoute, useIsFocused } from "@react-navigation/native";
 
 
-export default function LocationPicker() {
+export default function LocationPicker({onPickLocation}) {
     const navigation = useNavigation();
     const route = useRoute();
     const isFocused = useIsFocused();
@@ -23,6 +23,10 @@ export default function LocationPicker() {
             setPickedLocation(mapPickedLocation);
         }
     }, [route, isFocused]);
+
+    useEffect(() => {
+        onPickLocation(pickedLocation);
+    }, [pickedLocation, onPickLocation]);
 
     async function verifiedPermissions() {
         // Function to get permissions (IOS)
