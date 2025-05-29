@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { Colors } from "../../constants/Colors";
 import ImagePicker from "./ImagePicker";
 import LocationPicker from "./LocationPicker";
+import Button from "../ui/Button";
 
 export default function PlaceForm() {
     const [enteredTitle, setEnteredTitle] = useState();
@@ -10,6 +11,11 @@ export default function PlaceForm() {
     function changeTitleHandler(enteredText) {
         setEnteredTitle(enteredText);
     };
+
+    function savePlaceHandler() {
+        
+    };
+
     return (
         <ScrollView style={styles.form}>
             <View>
@@ -18,6 +24,9 @@ export default function PlaceForm() {
             </View>
             <ImagePicker />
             <LocationPicker />
+            <Button onPress={savePlaceHandler}>
+                Add Place
+            </Button>
         </ScrollView>
     );
 };
