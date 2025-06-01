@@ -6,12 +6,13 @@ import { fetchPlaces } from "../util/database";
 export default function AllPlaces({route}) {
     const [loadedPlaces, setLoadedPlaces] = useState([]);
     const isFocused = useIsFocused();
-    useEffect(() => {
-        async function loadPlaces() {
-            const places = await fetchPlaces();
-            setLoadedPlaces(places);
-        };
 
+    async function loadPlaces() {
+        const places = await fetchPlaces();
+        setLoadedPlaces(places);
+    }
+
+    useEffect(() => {
         if(isFocused) {
             loadPlaces();
         };
@@ -20,7 +21,7 @@ export default function AllPlaces({route}) {
 
     return (
         <>
-            <PlacesList places={loadedPlaces}/>
+            <PlacesList places={loadedPlaces} onDeleteComplete={loadPlaces}/>
         </>
     );
 };

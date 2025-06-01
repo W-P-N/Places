@@ -1,15 +1,16 @@
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { Colors } from "../../constants/Colors";
+import IconButton from "../ui/IconButton";
 
-export default function PlaceItem({place, onSelect}) {
-    // console.log(place);
+export default function PlaceItem({place, onSelect, onDelete}) {
     return (
-        <Pressable onPress={onSelect.bind(this, place.id)} style={({pressed}) => [styles.item, pressed && styles.pressed]}>
+        <Pressable onPress={onSelect.bind(this, place.item.id)} style={({pressed}) => [styles.item, pressed && styles.pressed]}>
             <Image source={{uri: place.item.imageUri}} style={styles.image}/>
             <View style={styles.info}>
                 <Text style={styles.title}>{place.item.title}</Text>
                 <Text style={styles.address}>{place.item.address}</Text>
             </View>
+            <IconButton icon={'trash-outline'} size={20} onPress={onDelete.bind(this, place.item.id)}/>
         </Pressable>
     );
 };

@@ -30,8 +30,19 @@ export async function insertPlace(place) {
                 place.location.lng
             ]
         );
-        console.log('Insert result:', result);
-        return result;
+
+        const id = result.lastInsertRowId;
+
+        return new Place(
+            place.title,
+            place.imageUri,
+            {
+                address: place.address,
+                lat: place.location.lat,
+                lng: place.location.lng
+            },
+            id // Now attach the correct numeric id
+        );
     } catch (error) {
         console.error('Error inserting place:', error);
         throw error;
@@ -58,7 +69,7 @@ export async function fetchPlaces() {
             );
         }
 
-        console.log(places);
+        // console.log(places);
         return places;
     } catch (error) {
         console.error("Error fetching places from the database:", error);
@@ -67,24 +78,51 @@ export async function fetchPlaces() {
 };
 
 export async function fetchPlaceDetails(id) {
-    const dbPlace = await database.getFirstAsync(
-        `
-            SELECT * FROM places WHERE id = ?
-        `,
-        [id]
-    );
+    try {
+        console.log('Looking for place with id:', id);
 
-    const place = new Place(
-        dbPlace.title,
-        dbPlace.imageUri,
-        {
-            lat: dbPlace.lat,
-            lng: dbPlace.lng,
-            address: dbPlace.address
-        },
-        dbPlace.id
-    );
+        const dbPlace = await database.getFirstAsync(
+            `
+                SELECT * FROM places WHERE id = ?
+            `,
+            [id]
+        );
 
-    return place;
+        if (!dbPlace) {
+            console.warn(`No place found with id ${id}`);
+            return null; // or throw an error, depending on your app's needs
+        }
+    
+        const place = new Place(
+            dbPlace.title,
+            dbPlace.imageUri,
+            {
+                lat: dbPlace.lat,
+                lng: dbPlace.lng,
+                address: dbPlace.address
+            },
+            dbPlace.id
+        );
+    
+        return place;
+    } catch(e) {
+        console.log('Error occured', e);
+    }
 };
+
+export async function removePlace(id) {
+    // const rows = await database.getAllAsync(`SELECT * FROM places`);
+    // console.log("Current Places Table:", rows);
+    try { 
+        const toDeletePlace = await database.runAsync(
+            `
+                DELETE FROM places WHERE id = ?
+            `,
+            [id]
+        );
+        console.log(toDeletePlace.changes, toDeletePlace.lastInsertRowId);
+    } catch (e) {
+        console.log(e);
+    } 
+}
 
