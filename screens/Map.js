@@ -3,11 +3,16 @@ import { Alert, StyleSheet, View } from "react-native";
 import MapView, { Marker } from 'react-native-maps';
 import IconButton from "../componenets/ui/IconButton";
 
-export default function Map({navigation}) {
-    const [selectedLocation, setSelectedLocation] = useState();
+export default function Map({navigation, route}) {
+    const initialLocation = route.params && {
+        lat: route.params.initialLat, lng: route.params.initialLng
+    };
+
+    const [selectedLocation, setSelectedLocation] = useState(initialLocation);
+
     const region = {
-        latitude: 37.78,
-        longitude: -122.43,
+        latitude: initialLocation ? initialLocation.lat : 37.78,
+        longitude: initialLocation ? initialLocation.lng :-122.43,
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421
     };
@@ -32,6 +37,9 @@ export default function Map({navigation}) {
 
     // To render the save button when starting.
     useLayoutEffect(() => {
+        if(initialLocation) {
+            return;
+        }
         navigation.setOptions({
             headerRight: ({tintColor}) => <IconButton icon={'save'} size={24} color={tintColor} onPress={savePickedLocationHandler}/>
         });

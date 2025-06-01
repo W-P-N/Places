@@ -8,7 +8,10 @@ export default function PlaceDetails({route, navigation}) {
     const [fetchedPlace, setFetchedPlace] = useState();
 
     function showOnMapHandler() {
-        navigation.navigate('Map');
+        navigation.navigate('Map', {
+            initialLat: fetchedPlace.location.lat,
+            initialLng: fetchedPlace.location.lng
+        });
     };
 
     // console.log(route.params.placeId, 'yes'); //Working
